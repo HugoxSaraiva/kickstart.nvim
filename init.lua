@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -187,6 +187,9 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Keybinds to save file
+vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save file' })
+vim.keymap.set('i', '<C-s>', '<ESC>:w<CR>a', { desc = 'Save file on insert mode' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
