@@ -104,7 +104,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -551,7 +551,7 @@ require('lazy').setup({
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
             map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
             end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -616,6 +616,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'prettier',
+        'prettierd',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -670,6 +672,7 @@ require('lazy').setup({
         go = { 'goimports', 'gofmt' },
         typescript = { { 'prettierd', 'prettier' } },
         rust = { 'rustfmt' },
+        html = { { 'prettierd', 'prettier' } },
       },
     },
   },
@@ -834,6 +837,8 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
+      -- Adds M-h M-j M-k M-l for moving lines and selection depending on vim mode.
+      require('mini.move').setup()
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
@@ -842,7 +847,24 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'go' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'vim',
+        'vimdoc',
+        'javascript',
+        'typescript',
+        'json',
+        'go',
+        'yaml',
+        'markdown',
+        'dockerfile',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
