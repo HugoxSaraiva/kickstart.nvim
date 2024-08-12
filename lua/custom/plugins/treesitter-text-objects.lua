@@ -22,10 +22,10 @@ return {
               -- You can also use captures from other query groups like ``
               -- Assignments
               ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
-              ['a='] = { query = '@assignment.outer', desc = 'Select [a]round part of an assignment [=]' },
-              ['i='] = { query = '@assignment.inner', desc = 'Select [i]nner part of an assignment [=]' },
-              ['l='] = { query = '@assignment.lhs', desc = 'Select [l]eft part of an assignment [=]' },
-              ['r='] = { query = '@assignment.rhs', desc = 'Select [r]ight part of an assignment [=]' },
+              ['=a'] = { query = '@assignment.outer', desc = 'Select [a]round part of an assignment [=]' },
+              ['=i'] = { query = '@assignment.inner', desc = 'Select [i]nner part of an assignment [=]' },
+              ['=l'] = { query = '@assignment.lhs', desc = 'Select [l]eft part of an assignment [=]' },
+              ['=r'] = { query = '@assignment.rhs', desc = 'Select [r]ight part of an assignment [=]' },
 
               -- Parameters
               ['ap'] = { query = '@parameter.outer', desc = 'Select [a]round part of a [p]arameter/argument' },
