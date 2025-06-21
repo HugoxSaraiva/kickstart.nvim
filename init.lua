@@ -84,8 +84,13 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 -- Set default language to english
-vim.api.nvim_exec2('language en_US', {})
-
+local os_utils = require 'custom.utils.os_utils'
+local current_os = os_utils.get_os()
+if current_os == 'Mac' then
+  vim.api.nvim_exec2('language en_US', {})
+elseif current_os == 'Linux' then
+  vim.api.nvim_exec2('language en_US.utf8', {})
+end
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)

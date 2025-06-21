@@ -24,6 +24,7 @@ return {
 
       -- Add your own debuggers here
       'leoluz/nvim-dap-go',
+      'julianolf/nvim-dap-lldb',
     },
     keys = {
       -- Basic debugging keymaps, feel free to change to your liking!
@@ -37,16 +38,16 @@ return {
       {
         '<F1>',
         function()
-          require('dap').step_into()
+          require('dap').step_over()
         end,
-        desc = 'Debug: Step Into',
+        desc = 'Debug: Step Over',
       },
       {
         '<F2>',
         function()
-          require('dap').step_over()
+          require('dap').step_into()
         end,
-        desc = 'Debug: Step Over',
+        desc = 'Debug: Step Into',
       },
       {
         '<F3>',
@@ -77,10 +78,27 @@ return {
         end,
         desc = 'Debug: See last session result.',
       },
+      {
+        mode = 'n',
+        '<leader>dr',
+        function()
+          require('dapui').open { reset = true }
+        end,
+        desc = 'Debug: Open/Reset DapUI',
+      },
+      {
+        mode = 'n',
+        '<leader>dc',
+        function()
+          require('dapui').close()
+        end,
+        desc = 'Debug: Close DapUI',
+      },
     },
     config = function()
       local dap = require 'dap'
       local dapui = require 'dapui'
+      local os_utils = require 'custom.utils.os_utils'
 
       require('mason-nvim-dap').setup {
         -- Makes a best effort to setup the various debuggers with
@@ -133,10 +151,16 @@ return {
       --   local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
       --   vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
       -- end
+      --
+      --
 
       dap.adapters.codelldb = {
         type = 'executable',
         command = 'codelldb',
+        detached = function()
+          local current_os = os_utils.get_os()
+          return current_os ~= 'Windows'
+        end,
       }
 
       dap.configurations.cpp = {
@@ -152,6 +176,9 @@ return {
         },
       }
 
+      -- dap.configurations.c = dap.configurations.cpp
+      dap.configurations.rust = dap.configurations.cpp
+
       dap.configurations.c = {
         {
           name = 'Launch file',
@@ -159,16 +186,17 @@ return {
           request = 'launch',
           program = function()
             -- Build with debug symbols
-            local out = vim.fn.system { 'make', 'debug' }
+            local out = vim.fn.system { 'make', 'debug', 'TARGET=executable' }
             -- Check for errors
             if vim.v.shell_error ~= 0 then
               vim.notify(out, vim.log.levels.ERROR)
               return nil
             end
             -- Return path to the debuggable program
-            return 'bin/Debug/exefile'
+            return 'bin/Debug/executable'
           end,
           cwd = '${workspaceFolder}',
+          initCommands = { "settings set target.process.thread.step-avoid-regexp ''" },
           stopOnEntry = false,
           args = {},
         },
@@ -187,9 +215,5 @@ return {
         },
       }
     end,
-  },
-  {
-    'julianolf/nvim-dap-lldb',
-    dependencies = { 'mfussenegger/nvim-dap' },
   },
 }
