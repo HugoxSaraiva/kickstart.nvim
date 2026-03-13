@@ -36,6 +36,13 @@ return {
         desc = 'Debug: Start/Continue',
       },
       {
+        '<F6>',
+        function()
+          require('dap').terminate()
+        end,
+        desc = 'Debug: Terminate',
+      },
+      {
         '<F1>',
         function()
           require('dap').step_over()
@@ -186,14 +193,14 @@ return {
           request = 'launch',
           program = function()
             -- Build with debug symbols
-            local out = vim.fn.system { 'make', 'debug', 'TARGET=executable' }
+            local out = vim.fn.system { 'make', 'NAME=debug', 'DEBUG=1' }
             -- Check for errors
             if vim.v.shell_error ~= 0 then
               vim.notify(out, vim.log.levels.ERROR)
               return nil
             end
             -- Return path to the debuggable program
-            return 'bin/Debug/executable'
+            return 'bin/debug'
           end,
           cwd = '${workspaceFolder}',
           initCommands = { "settings set target.process.thread.step-avoid-regexp ''" },
