@@ -1,10 +1,21 @@
 return {
   {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    event = 'VeryLazy',
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  branch = "main",
+  event = 'VeryLazy',
+    init = function()
+    -- Disable entire built-in ftplugin mappings to avoid conflicts.
+    -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
+    vim.g.no_plugin_maps = true
+
+    -- Or, disable per filetype (add as you like)
+    -- vim.g.no_python_maps = true
+    -- vim.g.no_ruby_maps = true
+    -- vim.g.no_rust_maps = true
+    -- vim.g.no_go_maps = true
+    end,
     config = function()
-      require('nvim-treesitter.configs').setup {
-        textobjects = {
+      require("nvim-treesitter-textobjects").setup {  
           select = {
             enable = true,
 
@@ -114,11 +125,9 @@ return {
               ['[L'] = { query = '@loop.outer', desc = 'Prev [l]oop end' },
             },
           },
-        },
       }
 
-      local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
-
+      local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
       -- Repeat movement with ; and ,
       -- ensure ; goes forward and , goes backward regardless of the last direction
       vim.keymap.set({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move_next)
