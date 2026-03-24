@@ -493,7 +493,10 @@ require('lazy').setup({
         ---@module 'mason.settings'
         ---@type MasonSettings
         ---@diagnostic disable-next-line: missing-fields
-        opts = {},
+        opts = {
+          'github:mason-org/mason-registry',
+          'github:Crashdummyy/mason-registry',
+        },
       },
       -- Maps LSP server names between nvim-lspconfig and Mason package names.
       'mason-org/mason-lspconfig.nvim',
